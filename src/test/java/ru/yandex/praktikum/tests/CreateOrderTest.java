@@ -13,6 +13,7 @@ import ru.yandex.praktikum.models.createOrder.CreateOrderRequest;
 import ru.yandex.praktikum.models.createOrder.CreateOrderResponse;
 
 import static io.restassured.RestAssured.given;
+import static ru.yandex.praktikum.Constants.SCOOTER_URL;
 import static ru.yandex.praktikum.helpers.DataPicker.getData;
 
 @RunWith(Parameterized.class)
@@ -37,7 +38,7 @@ public class CreateOrderTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
+        RestAssured.baseURI = SCOOTER_URL;
     }
 
     @Test

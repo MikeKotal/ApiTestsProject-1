@@ -9,12 +9,13 @@ import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.notNullValue;
+import static ru.yandex.praktikum.Constants.SCOOTER_URL;
 
 public class GetOrdersTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
+        RestAssured.baseURI = SCOOTER_URL;
     }
 
     @Test

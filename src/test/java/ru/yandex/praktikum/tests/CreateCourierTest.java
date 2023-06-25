@@ -14,13 +14,14 @@ import ru.yandex.praktikum.models.loginCourier.LoginCourierRequest;
 import ru.yandex.praktikum.models.loginCourier.LoginCourierResponse;
 
 import static io.restassured.RestAssured.given;
+import static ru.yandex.praktikum.Constants.SCOOTER_URL;
 import static ru.yandex.praktikum.helpers.DataPicker.getData;
 
 public class CreateCourierTest {
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = "http://qa-scooter.praktikum-services.ru";
+        RestAssured.baseURI = SCOOTER_URL;
     }
 
     @Step("Delete test courier after create courier")
