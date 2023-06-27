@@ -6,6 +6,15 @@ public class CourierRequest {
     private String password;
     private String firstName;
 
+    public CourierRequest(String login, String password, String firstName) {
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+    }
+
+    public CourierRequest() {
+    }
+
     public String getLogin() {
         return login;
     }

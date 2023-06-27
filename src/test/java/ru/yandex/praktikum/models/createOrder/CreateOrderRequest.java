@@ -1,16 +1,22 @@
 package ru.yandex.praktikum.models.createOrder;
 
+import java.util.ArrayList;
+
 public class CreateOrderRequest {
 
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String metroStation;
-    private String phone;
-    private Integer rentTime;
-    private String deliveryDate;
-    private String comment;
-    private String[] color;
+    private String firstName = "Pupa";
+    private String lastName = "Lupa";
+    private String address = "Ленина, д.1";
+    private String metroStation = "1";
+    private String phone = "+7 800 355 35 35";
+    private Integer rentTime = 5;
+    private String deliveryDate = "2020-06-06";
+    private String comment = "Test";
+    private ArrayList<String> color;
+
+    public CreateOrderRequest() {
+
+    }
 
     public String getFirstName() {
         return firstName;
@@ -76,11 +82,11 @@ public class CreateOrderRequest {
         this.comment = comment;
     }
 
-    public String[] getColor() {
+    public ArrayList<String> getColor() {
         return color;
     }
 
-    public void setColor(String[] color) {
+    public void setColor(ArrayList<String> color) {
         this.color = color;
     }
 }

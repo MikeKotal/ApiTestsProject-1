@@ -1,6 +1,5 @@
 package ru.yandex.praktikum.tests;
 
-import com.google.gson.Gson;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
@@ -13,8 +12,7 @@ import ru.yandex.praktikum.models.loginCourier.LoginCourierRequest;
 import ru.yandex.praktikum.models.loginCourier.LoginCourierResponse;
 
 import static io.restassured.RestAssured.given;
-import static ru.yandex.praktikum.Constants.SCOOTER_URL;
-import static ru.yandex.praktikum.helpers.DataPicker.getData;
+import static ru.yandex.praktikum.Constants.*;
 
 public class LoginCourierTest {
 
@@ -40,12 +38,10 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Check success login courier")
     public void successLoginCourier() {
-        CourierRequest courierRequest =
-                new Gson().fromJson(getData("createCourier", "createCourierRequest"), CourierRequest.class);
+        CourierRequest courierRequest = new CourierRequest("pupa", "12345", "Lupa");
         createCourier(courierRequest);
-        LoginCourierRequest loginCourierRequest = new LoginCourierRequest();
-        loginCourierRequest.setLogin(courierRequest.getLogin());
-        loginCourierRequest.setPassword(courierRequest.getPassword());
+        LoginCourierRequest loginCourierRequest =
+                new LoginCourierRequest(courierRequest.getLogin(), courierRequest.getPassword());
 
         LoginCourierResponse loginCourierResponse =
                 given()
@@ -67,9 +63,7 @@ public class LoginCourierTest {
     @Test
     @DisplayName("Check response with invalid login and password")
     public void negativeInvalidLoginAndPassword() {
-        LoginCourierRequest loginCourierRequest =
-                new Gson().fromJson(getData("loginCourier", "negativeInvalidLoginAndPassword"), LoginCourierRequest.class);
-        String expectedMessage = "Учетная запись не найдена";
+        LoginCourierRequest loginCourierRequest = new LoginCourierRequest("test", "test");
 
         LoginCourierResponse loginCourierResponse =
                 given()
@@ -84,15 +78,13 @@ public class LoginCourierTest {
                         .body()
                         .as(LoginCourierResponse.class);
 
-        Assert.assertEquals(expectedMessage, loginCourierResponse.getMessage());
+        Assert.assertEquals(ERROR_LOGIN_NOT_FOUND, loginCourierResponse.getMessage());
     }
 
     @Test
     @DisplayName("Check empty login")
     public void negativeLoginIsEmpty() {
-        LoginCourierRequest loginCourierRequest =
-                new Gson().fromJson(getData("loginCourier", "negativeLoginIsEmpty"), LoginCourierRequest.class);
-        String expectedMessage = "Недостаточно данных для входа";
+        LoginCourierRequest loginCourierRequest = new LoginCourierRequest("", "test");
 
         LoginCourierResponse loginCourierResponse =
                 given()
@@ -107,15 +99,13 @@ public class LoginCourierTest {
                         .body()
                         .as(LoginCourierResponse.class);
 
-        Assert.assertEquals(expectedMessage, loginCourierResponse.getMessage());
+        Assert.assertEquals(ERROR_LOGIN, loginCourierResponse.getMessage());
     }
 
     @Test
     @DisplayName("Check empty password")
     public void negativePasswordIsEmpty() {
-        LoginCourierRequest loginCourierRequest =
-                new Gson().fromJson(getData("loginCourier", "negativePasswordIsEmpty"), LoginCourierRequest.class);
-        String expectedMessage = "Недостаточно данных для входа";
+        LoginCourierRequest loginCourierRequest = new LoginCourierRequest("test", "");
 
         LoginCourierResponse loginCourierResponse =
                 given()
@@ -130,7 +120,7 @@ public class LoginCourierTest {
                         .body()
                         .as(LoginCourierResponse.class);
 
-        Assert.assertEquals(expectedMessage, loginCourierResponse.getMessage());
+        Assert.assertEquals(ERROR_LOGIN, loginCourierResponse.getMessage());
     }
 
 }

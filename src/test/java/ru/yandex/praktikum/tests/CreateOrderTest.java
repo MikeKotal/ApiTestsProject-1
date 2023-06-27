@@ -1,6 +1,5 @@
 package ru.yandex.praktikum.tests;
 
-import com.google.gson.Gson;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import org.apache.http.HttpStatus;
@@ -12,27 +11,30 @@ import org.junit.runners.Parameterized;
 import ru.yandex.praktikum.models.createOrder.CreateOrderRequest;
 import ru.yandex.praktikum.models.createOrder.CreateOrderResponse;
 
+import java.util.ArrayList;
+
 import static io.restassured.RestAssured.given;
-import static ru.yandex.praktikum.Constants.SCOOTER_URL;
-import static ru.yandex.praktikum.helpers.DataPicker.getData;
+import static ru.yandex.praktikum.Constants.*;
 
 @RunWith(Parameterized.class)
 public class CreateOrderTest {
 
-    CreateOrderRequest createOrderRequest;
+    private final ArrayList<String> colors;
 
-    public CreateOrderTest(CreateOrderRequest createOrderRequest) {
-        this.createOrderRequest = createOrderRequest;
+    public CreateOrderTest(String firstColor, String secondColor) {
+        ArrayList<String> colors = new ArrayList<>();
+        colors.add(firstColor);
+        colors.add(secondColor);
+        this.colors = colors;
     }
 
     @Parameterized.Parameters
     public static Object[][] getOrderDates() {
-        String endPath = "createOrder";
         return new Object[][]{
-                {new Gson().fromJson(getData(endPath, "successCreateOrderBlack"), CreateOrderRequest.class)},
-                {new Gson().fromJson(getData(endPath, "successCreateOrderGrey"), CreateOrderRequest.class)},
-                {new Gson().fromJson(getData(endPath, "successCreateOrderBlackAndGrey"), CreateOrderRequest.class)},
-                {new Gson().fromJson(getData(endPath, "successCreateOrderWithoutColor"), CreateOrderRequest.class)}
+                {BLACK, null},
+                {GREY, null},
+                {BLACK, GREY},
+                {null, null}
         };
     }
 
@@ -44,6 +46,9 @@ public class CreateOrderTest {
     @Test
     @DisplayName("Check success creating orders")
     public void successCreateOrder() {
+        CreateOrderRequest createOrderRequest = new CreateOrderRequest();
+        createOrderRequest.setColor(colors);
+
         CreateOrderResponse createOrderResponse =
                 given()
                         .header("Content-type", "application/json")
